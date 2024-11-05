@@ -1,4 +1,5 @@
 import os
+import re
 from datetime import datetime
 
 def generate_index_html(directory):
@@ -45,18 +46,13 @@ def generate_index_html(directory):
     """
     html_content += '<h1>Html Versions of Manuals of Typst Packages</h1>'
     
-    # Add Recent section
-    html_content += "<h2>Recent</h2><ul>"
+    html_content += "<ul>"
     for i, file in enumerate(html_files[:4]):
         file_title = os.path.splitext(file)[0]
-        html_content += f"<li><a href='{file}'>{file_title}</a></li>"
-    html_content += "</ul>"
-    
-    # Add Past section
-    html_content += "<h2>Past</h2><ul>"
-    for file in html_files[4:]:
-        file_title = os.path.splitext(file)[0]
-        html_content += f"<li><a href='{file}'>{file_title}</a></li>"
+        parts = re.split(r'[-_]', file_title)
+        file_name = parts[0]
+        version = parts[1]
+        html_content += f"<li><a href='{file}'>{file_name} Version: {version}</a></li>"
     html_content += "</ul>"
     
     html_content += "</body></html>"
